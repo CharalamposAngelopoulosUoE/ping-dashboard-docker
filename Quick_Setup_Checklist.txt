@@ -1,0 +1,61 @@
+
+# Quick Setup Checklist: Ping Dashboard
+
+This document summarizes how to run **both the Dashboard (Docker)** and **Scheduled Email Alerts (Task Scheduler)**.
+
+---
+
+## 1. Dashboard (Docker)
+
+### Build and Run
+1. Install Docker Desktop (WSL2 backend).
+2. Open PowerShell and navigate to project root:
+   ```
+   cd "C:\Users\cangelop\Desktop\Python\Ping_Dashboard"
+   ```
+3. Build image and start container:
+   ```
+   docker compose build
+   docker compose up -d
+   ```
+4. Open browser: [http://localhost:5000](http://localhost:5000)
+
+### Stop Dashboard
+```
+docker compose down
+```
+
+---
+
+## 2. Task Scheduler (Email Alerts)
+
+### Scripts
+- `monitor/daily_scan.py` → Runs twice daily
+- `logger/weekly_report.py` → Runs every Monday
+
+### .bat Launchers
+- `run_daily_scan.bat`
+- `weekly_report_launcher.bat`
+
+### Setup
+1. Open **Task Scheduler** → Create Basic Task
+2. Trigger → Daily / Weekly (choose desired schedule)
+3. Action → Start a program
+4. Program/script: `C:\Path\to\batfile.bat`
+
+---
+
+## 3. Files to Update Regularly
+
+- `data/IP_List.xlsx` → List of monitored IPs
+- `env/.env.daily` and `env/.env.weekly` → Email credentials (only for Task Scheduler scripts)
+
+---
+
+## 4. Important Notes
+
+- Docker version does **not send emails** (dashboard only).
+- Task Scheduler version handles **all email alerts**.
+- Ensure logs are written to `logger/logs/`.
+- For changes in Excel file → Restart Dashboard (if Docker running) or rerun scripts.
+

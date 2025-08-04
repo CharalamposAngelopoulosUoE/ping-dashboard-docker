@@ -1,0 +1,7 @@
+flask
+pandas
+openpyxl
+python-dotenv
+colorama
+fpdf
+matplotlib

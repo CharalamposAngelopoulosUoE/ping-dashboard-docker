@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Ping Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { padding: 20px; }
+        .status-online { color: green; font-weight: bold; }
+        .status-offline { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Live Ping Dashboard</h2>
+    <p>Automatic scan every 15 minutes. Countdown: <span id="countdown">900</span> seconds</p>
+
+    <!-- Online/Offline counters -->
+    <div class="d-flex mb-3">
+        <div class="me-4">Online: <span id="onlineCount" class="status-online">0</span></div>
+        <div>Offline: <span id="offlineCount" class="status-offline">0</span></div>
+    </div>
+
+    <!-- Pie chart -->
+    <canvas id="statusChart" width="200" height="200"></canvas>
+
+    <!-- Table -->
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IP</th>
+                <th>Status</th>
+                <th>Last Checked</th>
+            </tr>
+        </thead>
+        <tbody id="ipTable"></tbody>
+    </table>
+
+<script>
+const intervalSeconds = 900; // 15 minutes
+let countdown = intervalSeconds;
+let online = 0, offline = 0;
+let chart;
+
+// Initialize chart
+function initChart() {
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Online', 'Offline'],
+            datasets: [{
+                data: [0, 0],
+                backgroundColor: ['green', 'red']
+            }]
+        }
+    });
+}
+
+function updateChart() {
+    chart.data.datasets[0].data = [online, offline];
+    chart.update();
+}
+
+async function fetchIPs() {
+    const res = await fetch('/get_ips');
+    return await res.json();
+}
+
+async function pingIP(name, ip) {
+    const res = await fetch('/ping_one', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name, ip})
+    });
+    return await res.json();
+}
+
+async function runScan() {
+    document.getElementById('ipTable').innerHTML = '';
+    online = 0; offline = 0;
+
+    const ips = await fetchIPs();
+    for (const entry of ips) {
+        const result = await pingIP(entry["Name"], entry["IP Address"]);
+
+        if (result.status === "Online") online++; else offline++;
+
+        const row = `<tr>
+            <td>${result.name}</td>
+            <td>${result.ip}</td>
+            <td class="${result.status === 'Online' ? 'status-online' : 'status-offline'}">${result.status}</td>
+            <td>${result.timestamp}</td>
+        </tr>`;
+        document.getElementById('ipTable').insertAdjacentHTML('beforeend', row);
+    }
+
+    updateChart();
+}
+
+function startCountdown() {
+    setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+            countdown = intervalSeconds;
+            runScan();
+        }
+        document.getElementById('countdown').textContent = countdown;
+    }, 1000);
+}
+
+window.onload = async () => {
+    initChart();
+    await runScan();
+    startCountdown();
+}
+</script>
+</body>
+</html>

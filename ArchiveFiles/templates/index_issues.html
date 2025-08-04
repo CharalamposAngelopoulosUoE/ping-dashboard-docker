@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ping Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        #controls {
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            cursor: pointer;
+            background-color: #f2f2f2;
+        }
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .online { background-color: green; }
+        .offline { background-color: red; }
+        #scan-status {
+            margin-top: 10px;
+            font-style: italic;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h2>Ping Dashboard</h2>
+
+    <div id="controls">
+        <input type="text" id="searchInput" placeholder="Search building or IP...">
+        <button onclick="filterTable('all')">All</button>
+        <button onclick="filterTable('Online')">Online</button>
+        <button onclick="filterTable('Offline')">Offline</button>
+    </div>
+
+    <table id="ipTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Building</th>
+                <th onclick="sortTable(1)">IP Address</th>
+                <th onclick="sortTable(2)">Status</th>
+                <th onclick="sortTable(3)">Last Checked</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Rows will be populated here -->
+        </tbody>
+    </table>
+
+    <div id="scan-status"></div>
+
+    <script>
+        let tableData = [];
+        let lastScanTime = null;
+
+        async function fetchAndPing() {
+            document.getElementById('scan-status').innerText = 'Scanning...';
+
+            const res = await fetch('/get_ips');
+            const data = await res.json();
+            const offlineList = [];
+
+            tableData = [];
+            for (const entry of data) {
+                const pingRes = await fetch('/ping_one', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(entry)
+                });
+                const result = await pingRes.json();
+                tableData.push(result);
+
+                if (result.status === 'Offline') {
+                    offlineList.push(result);
+                }
+            }
+
+            renderTable(tableData);
+            lastScanTime = new Date();
+            document.getElementById('scan-status').innerText = `Scan finished at ${lastScanTime.toLocaleTimeString()} – next scan in 15 minutes`;
+
+            // Optional: send email
+            await fetch('/send_email', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(offlineList)
+            });
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            const sorted = [...data].sort((a, b) => a.status === 'Offline' ? -1 : 1);
+
+            for (const row of sorted) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row["Name"]}</td>
+                    <td>${row["IP Address"]}</td>
+                    <td><span class="status-dot ${row.status.toLowerCase()}"></span>${row.status}</td>
+                    <td>${row.timestamp}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        function filterTable(status) {
+            let filtered = tableData;
+            const term = document.getElementById('searchInput').value.toLowerCase();
+
+            if (status !== 'all') {
+                filtered = filtered.filter(r => r.status === status);
+            }
+            if (term) {
+                filtered = filtered.filter(r =>
+                    r.name.toLowerCase().includes(term) ||
+                    r.ip.toLowerCase().includes(term)
+                );
+            }
+            renderTable(filtered);
+        }
+
+        function sortTable(colIndex) {
+            const key = ['name', 'ip', 'status', 'timestamp'][colIndex];
+            tableData.sort((a, b) => a[key].localeCompare(b[key]));
+            renderTable(tableData);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', () => filterTable('all'));
+
+        fetchAndPing();
+    </script>
+</body>
+</html>

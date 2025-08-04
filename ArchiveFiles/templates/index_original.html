@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live IP Scan Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .online { background-color: #c6efce; color: #006100; }
+        .offline { background-color: #ffc7ce; color: #9c0006; }
+        .checking { background-color: #e0e0e0; color: #555; }
+        #scanBtn, #toggleAutoScan { padding: 10px 20px; font-size: 16px; cursor: pointer; margin-right: 10px; }
+        #timestamp { margin-top: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>Live IP Scan Dashboard</h1>
+    <button id="scanBtn">Run Scan</button>
+    <button id="toggleAutoScan">Stop Auto Scan</button>
+    <div id="timestamp"></div>
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>Building Name</th>
+                <th>IP Address</th>
+                <th>Status</th>
+                <th>Last Checked</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        let scanCount = 0;
+        let nextScanIn = 900; // 15 minutes
+        const intervalSeconds = 900;
+        let autoScan = true;
+        let scanInterval;
+
+        async function pingOneIP(name, ip, row) {
+            row.className = "checking";
+            row.cells[2].textContent = "Checking...";
+            row.cells[3].textContent = "...";
+
+            const response = await fetch("/ping_one", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, ip })
+            });
+            const result = await response.json();
+            const statusCell = row.cells[2];
+            const timeCell = row.cells[3];
+
+            if (result.status === "Online") {
+                statusCell.innerHTML = "🟢 Online";
+                row.className = "online";
+            } else {
+                statusCell.innerHTML = "🔴 Offline";
+                row.className = "offline";
+            }
+            timeCell.textContent = result.timestamp;
+
+            return result.status === "Offline" ? {
+                name: name,
+                ip: ip,
+                timestamp: result.timestamp
+            } : null;
+        }
+
+        async function runScan() {
+            const button = document.getElementById("scanBtn");
+            button.disabled = true;
+            button.textContent = "Scanning...";
+
+            const timestamp = new Date().toLocaleString();
+            scanCount++;
+
+            const res = await fetch("/get_ips");
+            const data = await res.json();
+
+            const tbody = document.querySelector("#resultsTable tbody");
+            tbody.innerHTML = "";
+
+            let offlineList = [];
+            let rowData = [];
+
+            for (const entry of data) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${entry.Name}</td>
+                    <td>${entry["IP Address"]}</td>
+                    <td>Checking...</td>
+                    <td>...</td>
+                `;
+                row.className = "checking";
+                tbody.appendChild(row);
+
+                const offline = await pingOneIP(entry.Name, entry["IP Address"], row);
+                rowData.push({ row, status: offline ? "Offline" : "Online" });
+                if (offline) offlineList.push(offline);
+            }
+
+            // Sort by status: Offline first
+            rowData.sort((a, b) => a.status.localeCompare(b.status));
+            tbody.innerHTML = "";
+            rowData.forEach(entry => tbody.appendChild(entry.row));
+
+// if (offlineList.length > 0) {
+//     await fetch("/send_email", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(offlineList)
+//     });
+// }
+
+
+            const nextTime = new Date(Date.now() + intervalSeconds * 1000).toLocaleTimeString();
+            document.getElementById("timestamp").innerHTML = `
+                ✅ Scan finished: ${timestamp}<br>
+                ⏰ Next scan scheduled at: ${nextTime}<br>
+                🔁 Total Scans This Session: ${scanCount}
+            `;
+
+            button.disabled = false;
+            button.textContent = "Run Scan";
+        }
+
+        function startAutoScan() {
+            scanInterval = setInterval(() => {
+                nextScanIn--;
+                if (nextScanIn <= 0) {
+                    nextScanIn = intervalSeconds;
+                    runScan();
+                }
+            }, 1000);
+        }
+
+        function stopAutoScan() {
+            clearInterval(scanInterval);
+        }
+
+        document.getElementById("scanBtn").onclick = runScan;
+        document.getElementById("toggleAutoScan").onclick = function() {
+            autoScan = !autoScan;
+            this.textContent = autoScan ? "Stop Auto Scan" : "Start Auto Scan";
+            if (autoScan) {
+                startAutoScan();
+            } else {
+                stopAutoScan();
+            }
+        };
+
+        runScan();
+        startAutoScan();
+    </script>
+</body>
+</html>

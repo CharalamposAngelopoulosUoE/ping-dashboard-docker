@@ -1,0 +1,7 @@
+pandas
+matplotlib
+fpdf
+flask
+colorama
+python-dotenv
+

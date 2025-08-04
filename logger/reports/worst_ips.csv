@@ -1,0 +1,21 @@
+name,ip,online_count,offline_count,total,uptime_pct
+0305 - Infirmary St - Controls,172.16.4.149,0,10,10,0.0
+2702 - QMRI - Central (ESS),172.16.133.36,0,10,10,0.0
+2702 - QMRI - Central (Non ESS),172.16.133.35,0,10,10,0.0
+2702 - QMRI - Drum (Non ESS),172.16.133.31,0,10,10,0.0
+Adam House,172.16.6.44,0,10,10,0.0
+Adam House - Main Incomer,172.16.6.223,0,10,10,0.0
+Dalhousie Land Main Electricity,172.16.6.122,0,10,10,0.0
+ECA Main Building - Electrical Incomer,172.16.6.128,0,10,10,0.0
+Easter Bush Nursery,172.16.4.222,0,10,10,0.0
+Informatics,172.16.6.232,0,10,10,0.0
+John Muir,172.16.133.9,0,10,10,0.0
+Pattersons Land Main Electricity No. 1 / No.2,172.16.6.121,0,10,10,0.0
+Peter & Mary Reading Lib.(LLRC),172.16.4.75,0,10,10,0.0
+Potterrow Basement,172.16.6.220,0,10,10,0.0
+QMRI - Main Switchroom,172.16.4.71,0,10,10,0.0
+Simon Laurie House Main Electricity,172.16.6.124,0,10,10,0.0
+South Hall,172.16.7.26,0,10,10,0.0
+St Johns Land Main Electricity,172.16.6.123,0,10,10,0.0
+St Leonards Land Main Electricity,172.16.6.129,0,10,10,0.0
+Energy Centre Endress & Hauser,172.16.134.63,8,2,10,80.0

@@ -1,0 +1,133 @@
+name,ip,status,timestamp
+Usher Grd Floor ,10.106.84.1,Online,2025-07-23 11:51:53
+Usher 4th Floor Electrical,10.106.84.2,Online,2025-07-23 11:51:53
+Usher 4th Floor Mechanical,10.106.84.4,Online,2025-07-23 11:51:53
+"Sub-Station  ""A""   KB ( Energy Centre)",172.16.133.1,Online,2025-07-23 11:51:53
+Geology,172.16.133.10,Online,2025-07-23 11:51:53
+Ashworth,172.16.133.11,Online,2025-07-23 11:51:53
+John Murray,172.16.133.12,Online,2025-07-23 11:51:53
+"Sub-Station ""B"" KB - Sanderson",172.16.133.2,Online,2025-07-23 11:51:53
+Solar Farm,172.16.133.20,Online,2025-07-23 11:51:53
+0668 - William Rankine,172.16.133.28,Online,2025-07-23 11:51:53
+2702 - QMRI - East (Non Ess),172.16.133.29,Online,2025-07-23 11:51:53
+"Sub-Station ""D"" KB - JCMB",172.16.133.3,Online,2025-07-23 11:51:53
+2702 - QMRI - East (ESS),172.16.133.30,Online,2025-07-23 11:51:53
+2702 - QMRI - Drum (Non ESS),172.16.133.31,Offline,2025-07-23 11:51:53
+2702 - QMRI - Drum (ESS),172.16.133.32,Online,2025-07-23 11:51:53
+2702 - QMRI - West (Non ESS),172.16.133.33,Online,2025-07-23 11:51:53
+2702 - QMRI - West (ESS),172.16.133.34,Online,2025-07-23 11:51:53
+2702 - QMRI - Central (Non ESS),172.16.133.35,Offline,2025-07-23 11:51:53
+2702 - QMRI - Central (ESS),172.16.133.36,Offline,2025-07-23 11:51:53
+2702 - QMRI - Primary LV (West/Central) TX1,172.16.133.37,Online,2025-07-23 11:51:53
+2702 - QMRI - Primary LV (West/Central),172.16.133.38,Online,2025-07-23 11:51:53
+2702 - QMRI - Primary LV (East/Drum),172.16.133.39,Online,2025-07-23 11:51:53
+Joseph Black,172.16.133.4,Online,2025-07-23 11:51:53
+Ashworth 2,172.16.133.5,Online,2025-07-23 11:51:53
+Nucleus Building - 4th Floor Plantroom,172.16.133.50,Online,2025-07-23 11:51:53
+Sanderson,172.16.133.6,Online,2025-07-23 11:51:53
+Fleeming Jenkin,172.16.133.7,Online,2025-07-23 11:51:53
+Structures Lab,172.16.133.8,Online,2025-07-23 11:51:53
+John Muir,172.16.133.9,Offline,2025-07-23 11:51:53
+Main Library PV,172.16.134.35,Online,2025-07-23 11:51:53
+0424 - Evo House - ECA Evo House  Electrical Incomer,172.16.134.41,Online,2025-07-23 11:51:53
+ECA First Floor Electrical Switchroom,172.16.134.43,Online,2025-07-23 11:51:53
+JMCC - 0846,172.16.134.49,Online,2025-07-23 11:51:53
+Energy Centre Endress & Hauser,172.16.134.63,Offline,2025-07-23 11:51:53
+FloWave Ocean Research Building KB,172.16.4.113,Online,2025-07-23 11:51:53
+Roslin 2A - 1st Floor,172.16.4.121,Online,2025-07-23 11:51:53
+KB Nursery,172.16.4.123,Online,2025-07-23 11:51:53
+Roslin 2B,172.16.4.124,Online,2025-07-23 11:51:53
+Mary Bruck PV,172.16.4.129,Online,2025-07-23 11:51:53
+Centre Building - Basement,172.16.4.132,Online,2025-07-23 11:51:53
+HECToR 1  (Easter Bush),172.16.4.135,Online,2025-07-23 11:51:53
+Roger Land,172.16.4.148,Online,2025-07-23 11:51:53
+0305 - Infirmary St - Controls,172.16.4.149,Offline,2025-07-23 11:51:53
+Darwin Greenhouse,172.16.4.151,Online,2025-07-23 11:51:53
+JCMB - EUCS Electrical Plantroom,172.16.4.154,Online,2025-07-23 11:51:53
+Easter Bush Energy Centre,172.16.4.173,Online,2025-07-23 11:51:53
+Waddington,172.16.4.192,Online,2025-07-23 11:51:53
+"EDSCCU (Equine Diagnostic, Surgical and Critical Care Unit)",172.16.4.199,Online,2025-07-23 11:51:53
+JCMB PV,172.16.4.209,Online,2025-07-23 11:51:53
+MEP Building,172.16.4.219,Online,2025-07-23 11:51:53
+Easter Bush Nursery,172.16.4.222,Offline,2025-07-23 11:51:53
+Murchison House,172.16.4.225,Online,2025-07-23 11:51:53
+LARIF - External Switchroom,172.16.4.238,Online,2025-07-23 11:51:53
+IRR TRF Plantroom Module 1,172.16.4.250,Offline,2025-07-23 11:51:53
+IRR TRF Plantroom Module 2,172.16.4.251,Online,2025-07-23 11:51:53
+IRR TRF Plantroom Module 3,172.16.4.252,Online,2025-07-23 11:51:53
+Roslin Institute (EBRC) - Plantroom beside Genny,172.16.4.47,Online,2025-07-23 11:51:53
+New Easter Bush Vets School,172.16.4.48,Online,2025-07-23 11:51:53
+SCRM Little France - Beside Main LV Switchboard,172.16.4.49,Online,2025-07-23 11:51:53
+SCRM Little France - Beside DHW Control Panel,172.16.4.50,Online,2025-07-23 11:51:53
+"Sub-Station ""C"" KB - Darwin",172.16.4.59,Online,2025-07-23 11:51:53
+"Sub Station ""E"" KB - Cl/rooms",172.16.4.62,Online,2025-07-23 11:51:53
+Easter Bush - Small Animals Electric,172.16.4.70,Online,2025-07-23 11:51:53
+QMRI - Main Switchroom,172.16.4.71,Offline,2025-07-23 11:51:53
+Peter & Mary Reading Lib.(LLRC),172.16.4.75,Offline,2025-07-23 11:51:53
+Archer/ACF,172.16.4.92,Online,2025-07-23 11:51:53
+HECToR 2 (Easter Bush),172.16.4.94,Online,2025-07-23 11:51:53
+ACF - WCDI-2,172.16.5.36,Online,2025-07-23 11:51:53
+ACF - WCDI-3,172.16.5.37,Online,2025-07-23 11:51:53
+Old College (Talbot Rice),172.16.6.111,Online,2025-07-23 11:51:53
+Old College (Law Basement),172.16.6.112,Online,2025-07-23 11:51:53
+Charles Stewart House - Basement Secure Room B1.2,172.16.6.118,Offline,2025-07-23 11:51:53
+Minto House Main Electricity Incomer,172.16.6.119,Online,2025-07-23 11:51:53
+Pattersons Land Main Electricity No. 1 / No.2,172.16.6.121,Offline,2025-07-23 11:51:53
+Dalhousie Land Main Electricity,172.16.6.122,Offline,2025-07-23 11:51:53
+St Johns Land Main Electricity,172.16.6.123,Offline,2025-07-23 11:51:53
+Simon Laurie House Main Electricity,172.16.6.124,Offline,2025-07-23 11:51:53
+Fleming House,172.16.6.125,Online,2025-07-23 11:51:53
+ECA Main Building - Electrical Incomer,172.16.6.128,Offline,2025-07-23 11:51:53
+St Leonards Land Main Electricity,172.16.6.129,Offline,2025-07-23 11:51:53
+ECCI Building,172.16.6.131,Online,2025-07-23 11:51:53
+Energy Centre,172.16.6.150,Online,2025-07-23 11:51:53
+Pleasance/Holyrood CHP 1,172.16.6.151,Online,2025-07-23 11:51:53
+Charteris Land - Switchroom 1,172.16.6.152,Online,2025-07-23 11:51:53
+9-11 Infirmary St,172.16.6.154,Online,2025-07-23 11:51:53
+High School Yards - Old Boilerhouse,172.16.6.155,Online,2025-07-23 11:51:53
+50 George Square,172.16.6.156,Online,2025-07-23 11:51:53
+Darroch Court,172.16.6.168,Online,2025-07-23 11:51:53
+Deaconess,172.16.6.179,Online,2025-07-23 11:51:53
+St Cecilias Hall,172.16.6.194,Online,2025-07-23 11:51:53
+Hugh Robson - Electrical Room,172.16.6.196,Online,2025-07-23 11:51:53
+WGH - Systems Medicine - Main LV Switchroom,172.16.6.203,Online,2025-07-23 11:51:53
+Medical School - Old Pump House,172.16.6.204,Online,2025-07-23 11:51:53
+New College/Mound,172.16.6.213,Online,2025-07-23 11:51:53
+Potterrow - Car Park,172.16.6.219,Online,2025-07-23 11:51:53
+Potterrow Basement,172.16.6.220,Offline,2025-07-23 11:51:53
+Adam House - Main Incomer,172.16.6.223,Offline,2025-07-23 11:51:53
+Appleton Tower - Basement Switchroom,172.16.6.224,Online,2025-07-23 11:51:53
+55-60 George Square,172.16.6.226,Online,2025-07-23 11:51:53
+Main Library - Chiller Plantroom,172.16.6.230,Offline,2025-07-23 11:51:53
+Informatics,172.16.6.232,Offline,2025-07-23 11:51:53
+Dugald Stewart,172.16.6.233,Offline,2025-07-23 11:51:53
+68-72Pleasance,172.16.6.237,Online,2025-07-23 11:51:53
+Outreach GHI,172.16.6.244,Online,2025-07-23 11:51:53
+Outreach LM,172.16.6.246,Online,2025-07-23 11:51:53
+Patersons Land,172.16.6.248,Offline,2025-07-23 11:51:53
+Dalhousie Land,172.16.6.249,Online,2025-07-23 11:51:53
+St Johns Land - Ground,172.16.6.250,Online,2025-07-23 11:51:53
+St Leonards Land,172.16.6.255,Online,2025-07-23 11:51:53
+Adam House,172.16.6.44,Offline,2025-07-23 11:51:53
+46 Pleasance - New LV Switchboard,172.16.6.45,Online,2025-07-23 11:51:53
+30-34 Buccleuch Place,172.16.6.48,Online,2025-07-23 11:51:53
+Archers Hall/Asham,172.16.6.62,Online,2025-07-23 11:51:53
+Old College West - New Plantroom,172.16.7.109,Online,2025-07-23 11:51:53
+Old Surgeons Hall,172.16.7.110,Online,2025-07-23 11:51:53
+JMC Pollock CHP,172.16.7.12,Online,2025-07-23 11:51:53
+The Bayes Centre,172.16.7.120,Online,2025-07-23 11:51:53
+WGH - CJD Main Electric,172.16.7.125,Online,2025-07-23 11:51:53
+7 - 8 Chambers St,172.16.7.144,Online,2025-07-23 11:51:53
+John Burnett Plant,172.16.7.177,Online,2025-07-23 11:51:53
+Chancellors Court PV,172.16.7.178,Online,2025-07-23 11:51:53
+Charteris Land - Switchroom 2,172.16.7.228,Offline,2025-07-23 11:51:53
+Pentland House,172.16.7.237,Online,2025-07-23 11:51:53
+Bayes PV,172.16.7.238,Online,2025-07-23 11:51:53
+South Hall,172.16.7.26,Offline,2025-07-23 11:51:53
+McEwan Hall,172.16.7.36,Online,2025-07-23 11:51:53
+Pollock South Substation,172.16.7.45,Offline,2025-07-23 11:51:53
+1-7 Buccleuch Place,172.16.7.47,Offline,2025-07-23 11:51:53
+Lister LTC - Learing & Training Centre,172.16.7.54,Online,2025-07-23 11:51:53
+Appleton Tower - Roof Chiller Plantroom,172.16.7.61,Online,2025-07-23 11:51:53
+WGH - WGH6QWTRCF(clinical),172.16.7.8,Online,2025-07-23 11:51:53
+13-15 South College St,172.16.7.9,Online,2025-07-23 11:51:53

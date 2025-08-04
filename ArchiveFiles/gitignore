@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment files
+.env
+.env.*
+
+# Logs and output
+logs/
+*.log
+
+# Reports
+*.csv
+*.pdf
+*.xlsx
+summary_chart_*.png
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# VS Code and other IDE settings
+.vscode/
+.idea/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Flask development server artifacts
+instance/

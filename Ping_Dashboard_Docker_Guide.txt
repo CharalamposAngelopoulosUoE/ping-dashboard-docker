@@ -1,0 +1,79 @@
+
+Ping Dashboard - Docker Run Guide
+=================================
+
+1. Install Prerequisites
+-------------------------
+- Install Docker Desktop: https://www.docker.com/products/docker-desktop
+- Verify installation:
+    docker --version
+    docker compose version
+
+2. Prepare Project Structure
+----------------------------
+Ensure this structure:
+
+Ping_Dashboard/
+├── app/
+│   ├── app.py
+│   └── templates/
+│       └── index.html
+├── monitor/
+│   └── daily_scan.py
+├── logger/
+│   ├── log_runner.py
+│   └── weekly_report.py
+├── data/
+│   └── IP_List.xlsx
+├── utils.py
+├── mailer.py
+├── config.py
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
+
+3. Build Docker Image
+---------------------
+docker compose build
+
+4. Start Containers
+-------------------
+docker compose up -d
+
+5. Access Dashboard
+-------------------
+http://localhost:5000
+
+6. Verify IP List
+-----------------
+docker exec -it ping_dashboard ls /app/data
+
+7. Run Daily Scan Manually
+--------------------------
+docker exec -it daily_scan python monitor/daily_scan.py
+
+8. Run Weekly Report Manually
+-----------------------------
+docker exec -it weekly_report python logger/weekly_report.py
+
+9. View Logs
+------------
+Dashboard:
+docker logs ping_dashboard
+
+Daily scan:
+docker logs daily_scan
+
+10. Stop Containers
+-------------------
+docker compose down
+
+11. Rebuild After Code Changes
+------------------------------
+docker compose down
+docker compose build
+docker compose up -d
+
+12. Remove Everything
+---------------------
+docker compose down --volumes --remove-orphans

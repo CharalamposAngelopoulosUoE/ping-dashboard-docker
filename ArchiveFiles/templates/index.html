@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live IP Scan Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #333; }
+    #controls { margin-bottom: 15px; }
+    input[type="text"] { padding: 6px; margin-right: 10px; width: 250px; }
+    button { padding: 10px 16px; font-size: 14px; cursor: pointer; margin-right: 5px; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #f4f4f4; cursor: pointer; }
+
+    .online { background-color: #c6efce; color: #006100; }
+    .offline { background-color: #ffc7ce; color: #9c0006; }
+    .checking { background-color: #e0e0e0; color: #555; }
+
+    #timestamp { margin-top: 15px; font-style: italic; }
+
+    #chart-container {
+      margin-bottom: 30px;
+      width: 400px;
+      max-width: 100%;
+    }
+
+    #statusCounts {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .label-green { color: #28a745; font-weight: bold; }
+    .label-red { color: #dc3545; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Live IP Scan Dashboard</h1>
+
+  <div id="chart-container">
+    <div id="statusCounts">
+      ✅ Online: <span class="label-green" id="onlineCount">0</span> |
+      ❌ Offline: <span class="label-red" id="offlineCount">0</span>
+    </div>
+    <canvas id="statusChart"></canvas>
+  </div>
+
+  <div id="controls">
+    <input type="text" id="searchInput" placeholder="Search by name or IP..." />
+    <button onclick="applyFilter('all')">All</button>
+    <button onclick="applyFilter('Online')">Online</button>
+    <button onclick="applyFilter('Offline')">Offline</button>
+    <button id="scanBtn">Run Scan</button>
+    <button id="toggleAutoScan">Stop Auto Scan</button>
+  </div>
+
+  <div id="timestamp"></div>
+
+  <table id="resultsTable">
+    <thead>
+      <tr>
+        <th>Building Name</th>
+        <th>IP Address</th>
+        <th>Status</th>
+        <th>Last Checked</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let scanCount = 0;
+    let nextScanIn = 900;
+    const intervalSeconds = 900;
+    let autoScan = true;
+    let scanInterval;
+    let originalData = [];
+    let chart;
+
+    async function pingOneIP(name, ip, row) {
+      row.className = "checking";
+      row.cells[2].textContent = "Checking...";
+      row.cells[3].textContent = "...";
+
+      const response = await fetch("/ping_one", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, ip })
+      });
+      const result = await response.json();
+      const statusCell = row.cells[2];
+      const timeCell = row.cells[3];
+
+      if (result.status === "Online") {
+        statusCell.innerHTML = "🟢 Online";
+        row.className = "online";
+      } else {
+        statusCell.innerHTML = "🔴 Offline";
+        row.className = "offline";
+      }
+      timeCell.textContent = result.timestamp;
+
+      return result.status === "Offline" ? { name, ip, timestamp: result.timestamp } : null;
+    }
+
+    async function runScan() {
+      const button = document.getElementById("scanBtn");
+      button.disabled = true;
+      button.textContent = "Scanning...";
+
+      const timestamp = new Date().toLocaleString();
+      scanCount++;
+
+      const res = await fetch("/get_ips");
+      const data = await res.json();
+
+      const tbody = document.querySelector("#resultsTable tbody");
+      tbody.innerHTML = "";
+
+      let offlineList = [];
+      let rowData = [];
+
+      for (const entry of data) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.Name}</td>
+          <td>${entry["IP Address"]}</td>
+          <td>Checking...</td>
+          <td>...</td>
+        `;
+        row.className = "checking";
+        tbody.appendChild(row);
+
+        const offline = await pingOneIP(entry.Name, entry["IP Address"], row);
+        rowData.push({
+          row,
+          name: entry.Name,
+          ip: entry["IP Address"],
+          status: offline ? "Offline" : "Online"
+        });
+
+        if (offline) offlineList.push(offline);
+      }
+
+      originalData = rowData;
+      rowData.sort((a, b) => a.status.localeCompare(b.status));
+      tbody.innerHTML = "";
+      rowData.forEach(entry => tbody.appendChild(entry.row));
+
+      const onlineCount = rowData.filter(e => e.status === "Online").length;
+      const offlineCount = rowData.filter(e => e.status === "Offline").length;
+      updateChart(onlineCount, offlineCount);
+
+      document.getElementById("onlineCount").textContent = onlineCount;
+      document.getElementById("offlineCount").textContent = offlineCount;
+
+      if (offlineList.length > 0) {
+        await fetch("/send_email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(offlineList)
+        });
+      }
+
+      const nextTime = new Date(Date.now() + intervalSeconds * 1000).toLocaleTimeString();
+      document.getElementById("timestamp").innerHTML = `
+        ✅ Scan finished: ${timestamp}<br>
+        ⏰ Next scan scheduled at: ${nextTime}<br>
+        🔁 Total Scans This Session: ${scanCount}
+      `;
+
+      button.disabled = false;
+      button.textContent = "Run Scan";
+    }
+
+    function updateChart(online, offline) {
+      const ctx = document.getElementById('statusChart').getContext('2d');
+      const data = {
+        labels: ['Online', 'Offline'],
+        datasets: [{
+          label: 'IP Status',
+          data: [online, offline],
+          backgroundColor: ['#28a745', '#dc3545']
+        }]
+      };
+
+      if (chart) {
+        chart.data.datasets[0].data = [online, offline];
+        chart.update();
+      } else {
+        chart = new Chart(ctx, {
+          type: 'pie',
+          data: data,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'bottom' },
+              title: { display: true, text: 'Online vs Offline IPs' }
+            }
+          }
+        });
+      }
+    }
+
+    function applyFilter(status = "all") {
+      const term = document.getElementById("searchInput").value.toLowerCase();
+      const tbody = document.querySelector("#resultsTable tbody");
+      tbody.innerHTML = "";
+
+      let filtered = originalData;
+
+      if (status !== "all") {
+        filtered = filtered.filter(entry => entry.status === status);
+      }
+
+      if (term) {
+        filtered = filtered.filter(entry =>
+          (entry.name && entry.name.toLowerCase().includes(term)) ||
+          (entry.ip && entry.ip.toLowerCase().includes(term))
+        );
+      }
+
+      filtered.forEach(entry => tbody.appendChild(entry.row));
+    }
+
+    function startAutoScan() {
+      scanInterval = setInterval(() => {
+        nextScanIn--;
+        if (nextScanIn <= 0) {
+          nextScanIn = intervalSeconds;
+          runScan();
+        }
+      }, 1000);
+    }
+
+    function stopAutoScan() {
+      clearInterval(scanInterval);
+    }
+
+    document.getElementById("scanBtn").onclick = runScan;
+    document.getElementById("toggleAutoScan").onclick = function () {
+      autoScan = !autoScan;
+      this.textContent = autoScan ? "Stop Auto Scan" : "Start Auto Scan";
+      if (autoScan) {
+        startAutoScan();
+      } else {
+        stopAutoScan();
+      }
+    };
+
+    document.getElementById("searchInput").addEventListener("input", () => applyFilter("all"));
+
+    runScan();
+    startAutoScan();
+  </script>
+</body>
+</html>
