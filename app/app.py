@@ -47,7 +47,7 @@ def reports():
     )
 
 # ---------------------- LIVE DASHBOARD (New) ----------------------
-@app.route("/live")
+@app.route("/")
 def live_dashboard():
     return render_template("live.html")
 

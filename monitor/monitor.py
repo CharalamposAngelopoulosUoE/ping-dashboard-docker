@@ -50,7 +50,7 @@ def main():
         # Open browser slightly after Flask starts
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
             threading.Timer(1.5, lambda: open_browser(args.live)).start()
-        app.run(debug=True, use_reloader=True)
+        app.run(host="0.0.0.0", debug=True, use_reloader=True)
 
 if __name__ == "__main__":
     main()
