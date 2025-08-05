@@ -45,7 +45,11 @@ def reports():
         chart_top=url_for('static', filename='reports/top_offline.png'),
         last_updated=last_updated
     )
+from flask import redirect
 
+@app.route("/")
+def index():
+    return redirect("/live")
 
 
 # ---------------------- API ENDPOINTS FOR LIVE DASHBOARD ----------------------
