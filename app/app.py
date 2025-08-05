@@ -46,10 +46,7 @@ def reports():
         last_updated=last_updated
     )
 
-# ---------------------- LIVE DASHBOARD (New) ----------------------
-@app.route("/")
-def live_dashboard():
-    return render_template("live.html")
+
 
 # ---------------------- API ENDPOINTS FOR LIVE DASHBOARD ----------------------
 @app.route("/get_ips")

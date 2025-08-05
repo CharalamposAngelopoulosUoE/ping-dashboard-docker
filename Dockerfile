@@ -1,4 +1,4 @@
-# Use lightweight Python image
+# Use lightweight Python
 FROM python:3.13-slim
 
 # Set working directory
@@ -8,10 +8,11 @@ WORKDIR /app
 COPY . /app
 
 # Install dependencies
-RUN pip install --no-cache-dir pandas matplotlib fpdf flask colorama python-dotenv
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose Flask port for dashboard
+# Expose Flask port
 EXPOSE 5000
 
-# Default command (runs dashboard manually)
+# Run dashboard by default
 CMD ["python", "monitor/monitor.py", "dashboard"]
+
