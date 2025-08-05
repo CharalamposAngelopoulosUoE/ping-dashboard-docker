@@ -1,0 +1,31 @@
+PING DASHBOARD V2 - HOW TO RUN
+=================================
+
+This version is dashboard-only (no emails, no reports).
+
+---------------------------------
+OPTION 1: RUN WITH DOCKER (RECOMMENDED)
+---------------------------------
+1. Download this repository and extract it.
+2. Open PowerShell in the extracted folder.
+3. Build the Docker image:
+   docker build -t ping_dashboard_v2 .
+4. Run the container:
+   docker run -p 5000:5000 ping_dashboard_v2
+5. Open browser:
+   http://127.0.0.1:5000
+
+---------------------------------
+OPTION 2: RUN WITH PYTHON
+---------------------------------
+1. Install Python 3.13
+2. Install dependencies:
+   pip install -r requirements.txt
+3. Run dashboard:
+   python monitor/monitor.py dashboard
+4. Open browser:
+   http://127.0.0.1:5000
+
+Notes:
+- The database (logger/ping_dashboard.db) is included as a sample.
+- You can replace it with your own database if needed.
